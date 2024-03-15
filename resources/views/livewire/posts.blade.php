@@ -23,11 +23,11 @@
         <label for="exampleFormControlInput1"></label>
         <input type="text" class="form-control" placeholder="Search Title or Body" style="width: 250px;" wire:model="searchTerm" >
     </div>
+
     <table class="table table-bordered mt-5">
         <thead>
             <tr>
-                <th class="sort" wire:click="sortOrder('id')" >Id{!! $sortLink !!}     <span class="bi bi-arrow-down-up "> </span>
- </span></th>
+                <th class="sort" wire:click="sortOrder('id')" >Id{!! $sortLink !!}<span class="bi bi-arrow-down-up "> </span></th>
                 <th class="sort" wire:click="sortOrder('title')">Title {!! $sortLink !!}</th>
                 <th class="sort" wire:click="sortOrder('body')">Body {!! $sortLink !!}</th>
                 <th width="150px">Action</th>
