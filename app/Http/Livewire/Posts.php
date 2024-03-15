@@ -4,21 +4,54 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\Post;
+use Livewire\WithPagination;
 
 class Posts extends Component
 {
-    public $posts, $title, $body, $post_id;
-    public $updateMode = false;
+    use WithPagination;
 
+    public $title, $body, $post_id;
+    public $updateMode = false;
+    protected $paginationTheme = 'bootstrap';
+
+    public $orderColumn = "title";
+    public $sortOrder = "asc";
+    public $sortLink = '<i class="sorticon fa-solid fa-caret-up"></i>';
+
+    public $searchTerm = "";
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
+
+     public function sortOrder($columnName=""){
+        $caretOrder = "up";
+        if($this->sortOrder == 'asc'){
+             $this->sortOrder = 'desc';
+             $caretOrder = "down";
+        }else{
+             $this->sortOrder = 'asc';
+             $caretOrder = "up";
+        } 
+        $this->sortLink = '<i class="sorticon fa-solid fa-caret-'.$caretOrder.'"></i>';
+
+        $this->orderColumn = $columnName;
+
+    }
+
     public function render()
     {
-        $this->posts = Post::all();
-        return view('livewire.posts');
+        $posts = Post::orderby($this->orderColumn, $this->sortOrder)->select('*');
+        if(!empty($this->searchTerm)){
+             $posts->orWhere('title','like',"%".$this->searchTerm."%");
+             $posts->orWhere('body','like',"%".$this->searchTerm."%");
+        }
+
+        $posts = $posts->paginate(2);
+        return view('livewire.posts', [
+            'posts' => $posts,
+        ]);
     }
 
     /**

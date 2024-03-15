@@ -22,6 +22,7 @@
                         </div>
                         @endif
                         @livewire('posts')
+                
                     </div>
                 </div>
             </div>
